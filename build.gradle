@@ -1,14 +1,14 @@
 buildscript {
-	ext {
-		springBootVersion = '2.0.1.RELEASE'
-	}
-	repositories {
-		mavenCentral()
+  ext {
+    springBootVersion = '2.0.1.RELEASE'
+  }
+  repositories {
+    mavenCentral()
     jcenter()
-	}
-	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-	}
+  }
+  dependencies {
+    classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+  }
 }
 
 group = 'com.github.hatimiti'
@@ -30,6 +30,8 @@ allprojects {
   	compile('org.springframework.boot:spring-boot-starter-web')
   	runtime('org.springframework.boot:spring-boot-devtools')
   	testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile 'org.junit.jupiter:junit-jupiter-api:5.2.0'
+    testRuntime 'org.junit.jupiter:junit-jupiter-engine:5.2.0'
   }
 
   mainClassName = ''
@@ -77,6 +79,7 @@ project("spring-aspects") {
 project("spring-cassandra") {
   dependencies {
     compile 'org.springframework.data:spring-data-cassandra'
+    testCompile group: 'org.cassandraunit', name: 'cassandra-unit-spring', version: '3.3.0.2'
   }
   task runCassandra(type: JavaExec) {
     main = 'com.github.hatimiti.spring.cassandra.Main'
