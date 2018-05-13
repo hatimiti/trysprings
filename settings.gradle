@@ -2,3 +2,4 @@ rootProject.name = "trysprings"
 
 include "spring-aspects"
 include "spring-cassandra"
+include "spring-actuator"

@@ -86,3 +86,13 @@ project("spring-cassandra") {
     classpath = sourceSets.main.runtimeClasspath
   }
 }
+
+project("spring-actuator") {
+  dependencies {
+    compile 'org.springframework.boot:spring-boot-starter-actuator'
+  }
+  task runActuator(type: JavaExec) {
+    main = 'com.github.hatimiti.spring.actuator.Main'
+    classpath = sourceSets.main.runtimeClasspath
+  }
+}
