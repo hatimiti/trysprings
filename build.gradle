@@ -22,14 +22,19 @@ allprojects {
   apply plugin: 'io.spring.dependency-management'
 
   repositories {
-  	mavenCentral()
+    mavenCentral()
     jcenter()
   }
 
   dependencies {
-  	compile('org.springframework.boot:spring-boot-starter-web')
-  	runtime('org.springframework.boot:spring-boot-devtools')
-  	testCompile('org.springframework.boot:spring-boot-starter-test')
+    compile 'org.springframework.boot:spring-boot-starter-web'
+    compile 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    compile 'org.springframework.boot:spring-boot-starter-jdbc'
+    compile 'org.springframework.boot:spring-boot-starter-data-jpa'
+    compile 'com.h2database:h2'
+    runtime 'org.springframework.boot:spring-boot-devtools'
+
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
     testCompile 'org.junit.jupiter:junit-jupiter-api:5.2.0'
     testRuntime 'org.junit.jupiter:junit-jupiter-engine:5.2.0'
   }
@@ -68,7 +73,7 @@ configure(allprojects) { project ->
 
 project("spring-aspects") {
   dependencies {
-  	compile('org.springframework.boot:spring-boot-starter-aop')
+    compile('org.springframework.boot:spring-boot-starter-aop')
   }
   task runAspects(type: JavaExec) {
     main = 'com.github.hatimiti.spring.aspects.Main'
@@ -93,6 +98,19 @@ project("spring-actuator") {
   }
   task runActuator(type: JavaExec) {
     main = 'com.github.hatimiti.spring.actuator.Main'
+    classpath = sourceSets.main.runtimeClasspath
+  }
+}
+
+project("spring-security-oauth2") {
+  dependencies {
+    compile "org.springframework.boot:spring-boot-starter-security"
+    compile "org.springframework.security:spring-security-oauth2-client"
+    compile "org.springframework.security:spring-security-oauth2-jose"
+    compile "org.thymeleaf.extras:thymeleaf-extras-springsecurity4"
+  }
+  task runActuator(type: JavaExec) {
+    main = 'com.github.hatimiti.spring.security.Main'
     classpath = sourceSets.main.runtimeClasspath
   }
 }
