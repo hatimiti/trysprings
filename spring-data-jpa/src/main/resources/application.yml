@@ -10,4 +10,17 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
+#    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true # 改行などで整形する
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: debug # SQLをログに出力
+        type:
+          descriptor:
+            sql:
+              BasicBinder: trace # バインドパラメータをログ出力
+          EnumType: trace
