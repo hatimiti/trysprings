@@ -29,8 +29,6 @@ allprojects {
   dependencies {
     compile 'org.springframework.boot:spring-boot-starter-web'
     compile 'org.springframework.boot:spring-boot-starter-thymeleaf'
-    compile 'org.springframework.boot:spring-boot-starter-jdbc'
-    compile 'org.springframework.boot:spring-boot-starter-data-jpa'
     compile 'com.h2database:h2'
     runtime 'org.springframework.boot:spring-boot-devtools'
 
@@ -71,6 +69,25 @@ configure(allprojects) { project ->
   }
 }
 
+project("dummy") {
+  dependencies {
+  }
+  task runDummy(type: JavaExec) {
+    main = 'com.github.hatimiti.spring.dummy.Main'
+    classpath = sourceSets.main.runtimeClasspath
+  }
+}
+
+project("spring-actuator") {
+  dependencies {
+    compile 'org.springframework.boot:spring-boot-starter-actuator'
+  }
+  task runActuator(type: JavaExec) {
+    main = 'com.github.hatimiti.spring.actuator.Main'
+    classpath = sourceSets.main.runtimeClasspath
+  }
+}
+
 project("spring-aspects") {
   dependencies {
     compile('org.springframework.boot:spring-boot-starter-aop')
@@ -92,12 +109,14 @@ project("spring-cassandra") {
   }
 }
 
-project("spring-actuator") {
+project("spring-data-jpa") {
   dependencies {
-    compile 'org.springframework.boot:spring-boot-starter-actuator'
+    compile 'org.springframework.boot:spring-boot-starter-jdbc'
+    compile 'javax.xml.bind:jaxb-api'
+    compile 'org.springframework.boot:spring-boot-starter-data-jpa'
   }
-  task runActuator(type: JavaExec) {
-    main = 'com.github.hatimiti.spring.actuator.Main'
+  task runDataJpa(type: JavaExec) {
+    main = 'com.github.hatimiti.spring.data.jpa.Main'
     classpath = sourceSets.main.runtimeClasspath
   }
 }

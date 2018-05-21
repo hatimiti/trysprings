@@ -1,7 +1,8 @@
 rootProject.name = "trysprings"
 
+include "dummy"
+include "spring-actuator"
 include "spring-aspects"
 include "spring-cassandra"
-include "spring-actuator"
-include "spring-security-oauth2"
 include "spring-data-jpa"
+include "spring-security-oauth2"
