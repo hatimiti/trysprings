@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Sql("/init.sql")
 @SpringBootTest
 @SpringJUnitConfig
-public class DummyTest {
+public class SpringDataJpaServiceTest {
 
     @Autowired
     SampleDataJpaService sampleDataJpaService;
