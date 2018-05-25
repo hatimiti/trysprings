@@ -11,7 +11,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.oauth2.client.CommonOAuth2Provider;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.InMemoryOAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
@@ -32,20 +31,23 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.springframework.security.config.oauth2.client.CommonOAuth2Provider.*;
+
 @EnableWebSecurity
 @Import(OAuth2ClientAutoConfiguration.class)
 @PropertySource("classpath:/application.yml")
 @Configuration
 public class SampleSecurityOAuth2Config extends WebSecurityConfigurerAdapter {
 
-    private static List<String> OAUTH2_CLIENTS = Arrays.asList("google", "facebook", "github", "twitter");
-    private static String CLIENT_PROPERTY_KEY = "spring.security.oauth2.client.registration.";
+    private static final List<String> OAUTH2_CLIENTS = Arrays.asList("google", "facebook", "github", "twitter");
+    private static final String CLIENT_PROPERTY_KEY = "spring.security.oauth2.client.registration.";
+    private static final String DEFAULT_LOGIN_REDIRECT_URL = "{baseUrl}/login/oauth2/code/{registrationId}";
 
     @Autowired private DataSource dataSource;
     @Autowired private Environment env;
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    protected void configure(final HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .mvcMatchers("/oauth_login") // NOTE: 自身で定義したログインページのみアクセス許可する
                 .permitAll()
@@ -65,7 +67,7 @@ public class SampleSecurityOAuth2Config extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication()
                 .dataSource(dataSource)
                 .usersByUsernameQuery("SELECT name as username, password, enabled FROM M_USER WHERE name = ?")
@@ -80,7 +82,7 @@ public class SampleSecurityOAuth2Config extends WebSecurityConfigurerAdapter {
 
     @Bean
     public ClientRegistrationRepository clientRegistrationRepository() {
-        List<ClientRegistration> registrations = OAUTH2_CLIENTS.stream()
+        final List<ClientRegistration> registrations = OAUTH2_CLIENTS.stream()
                 .map(c -> getRegistration(c))
                 .filter(registration -> registration != null)
                 .collect(Collectors.toList());
@@ -104,41 +106,33 @@ public class SampleSecurityOAuth2Config extends WebSecurityConfigurerAdapter {
         return new NimbusAuthorizationCodeTokenResponseClient();
     }
 
-    private ClientRegistration getRegistration(String client) {
-        String clientId = env.getProperty(CLIENT_PROPERTY_KEY + client + ".client-id");
-
-        if (clientId == null) {
+    private ClientRegistration getRegistration(final String client) {
+        if (client == null) {
             return null;
         }
+        switch (client) {
+            case "google": return buildRegistration(client, GOOGLE.getBuilder(client));
+            case "facebook": return buildRegistration(client, FACEBOOK.getBuilder(client));
+            case "github": return buildRegistration(client, GITHUB.getBuilder(client));
+            case "twitter": return buildRegistration(client, createTwitterRegistration(client));
+            default: return null;
+        }
+    }
 
-        String clientSecret = env.getProperty(
+    private ClientRegistration buildRegistration(final String client, final ClientRegistration.Builder builder) {
+        final String clientSecret = env.getProperty(
                 CLIENT_PROPERTY_KEY + client + ".client-secret");
-
-        if (client.equals("google")) {
-            return CommonOAuth2Provider.GOOGLE.getBuilder(client)
-                    .clientId(clientId).clientSecret(clientSecret).build();
-        }
-        if (client.equals("facebook")) {
-            return CommonOAuth2Provider.FACEBOOK.getBuilder(client)
-                    .clientId(clientId).clientSecret(clientSecret).build();
-        }
-        if (client.equals("github")) {
-            return CommonOAuth2Provider.GITHUB.getBuilder(client)
-                    .clientId(clientId).clientSecret(clientSecret).build();
-        }
-        if (client.equals("twitter")) {
-            return createTwitterRegistration(client)
-                    .clientId(clientId).clientSecret(clientSecret).build();
-        }
-        return null;
+        final String clientId = env.getProperty(
+                CLIENT_PROPERTY_KEY + client + ".client-id");
+        return builder.clientId(clientId).clientSecret(clientSecret).build();
     }
 
     /*
      * NOTE: AuthorizationGrantType に client_credentials が定義されていないため現時点で実装不可
      */
-    private ClientRegistration.Builder createTwitterRegistration(String client) {
+    private ClientRegistration.Builder createTwitterRegistration(final String client) {
 
-        ClientRegistration.Builder builder = ClientRegistration.withRegistrationId(client);
+        final ClientRegistration.Builder builder = ClientRegistration.withRegistrationId(client);
         builder.clientAuthenticationMethod(ClientAuthenticationMethod.POST);
         builder.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE); // client_credentials が選択できない
         builder.redirectUriTemplate(DEFAULT_LOGIN_REDIRECT_URL);
@@ -150,7 +144,4 @@ public class SampleSecurityOAuth2Config extends WebSecurityConfigurerAdapter {
                 .userNameAttributeName("id")
                 .clientName("Twitter");
     }
-
-    private static final String DEFAULT_LOGIN_REDIRECT_URL = "{baseUrl}/login/oauth2/code/{registrationId}";
-
 }

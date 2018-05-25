@@ -81,7 +81,7 @@ public class SampleSecurityOAuth2Controller {
         return "userinfo";
     }
 
-    private OAuth2AuthorizedClient getAuthorizedClient(OAuth2AuthenticationToken authentication) {
+    private OAuth2AuthorizedClient getAuthorizedClient(final OAuth2AuthenticationToken authentication) {
         return this.authorizedClientService.loadAuthorizedClient(
                 authentication.getAuthorizedClientRegistrationId(), authentication.getName());
     }
