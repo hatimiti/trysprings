@@ -14,6 +14,18 @@ buildscript {
 group = 'com.github.hatimiti'
 version = '0.0.1-SNAPSHOT'
 
+def void appendSpringBootDependencies(DependencyHandler d) {
+  d.compile 'org.springframework.boot:spring-boot-starter'
+  d.runtime 'org.springframework.boot:spring-boot-devtools'
+  d.testCompile 'org.springframework.boot:spring-boot-starter-test'
+}
+def void appendSpringBootWebDependencies(DependencyHandler d) {
+  d.compile 'org.springframework.boot:spring-boot-starter-web'
+  d.compile 'org.springframework.boot:spring-boot-starter-thymeleaf'
+  d.runtime 'org.springframework.boot:spring-boot-devtools'
+  d.testCompile 'org.springframework.boot:spring-boot-starter-test'
+}
+
 allprojects {
   apply plugin: 'java'
   apply plugin: 'application'
@@ -27,15 +39,12 @@ allprojects {
   }
 
   dependencies {
-    compile 'org.springframework.boot:spring-boot-starter-web'
-    compile 'org.springframework.boot:spring-boot-starter-thymeleaf'
     compile 'com.h2database:h2'
-    runtime 'org.springframework.boot:spring-boot-devtools'
 
-    testCompile 'org.springframework.boot:spring-boot-starter-test'
     testCompile 'org.junit.jupiter:junit-jupiter-api:5.2.0'
     testRuntime 'org.junit.jupiter:junit-jupiter-engine:5.2.0'
   }
+
 
   mainClassName = ''
 
@@ -71,6 +80,7 @@ configure(allprojects) { project ->
 
 project("dummy") {
   dependencies {
+    appendSpringBootWebDependencies(delegate)
   }
   task runDummy(type: JavaExec) {
     main = 'com.github.hatimiti.spring.dummy.Main'
@@ -80,6 +90,7 @@ project("dummy") {
 
 project("spring-actuator") {
   dependencies {
+    appendSpringBootWebDependencies(delegate)
     compile 'org.springframework.boot:spring-boot-starter-actuator'
   }
   task runActuator(type: JavaExec) {
@@ -90,6 +101,7 @@ project("spring-actuator") {
 
 project("spring-aspects") {
   dependencies {
+    appendSpringBootWebDependencies(delegate)
     compile('org.springframework.boot:spring-boot-starter-aop')
   }
   task runAspects(type: JavaExec) {
@@ -100,6 +112,7 @@ project("spring-aspects") {
 
 project("spring-cassandra") {
   dependencies {
+    appendSpringBootWebDependencies(delegate)
     compile 'org.springframework.data:spring-data-cassandra'
     testCompile group: 'org.cassandraunit', name: 'cassandra-unit-spring', version: '3.3.0.2'
   }
@@ -111,6 +124,7 @@ project("spring-cassandra") {
 
 project("spring-data-jpa") {
   dependencies {
+    appendSpringBootDependencies(delegate);
     compile 'org.springframework.boot:spring-boot-starter-jdbc'
     compile 'javax.xml.bind:jaxb-api'
     compile 'org.springframework.boot:spring-boot-starter-data-jpa'
@@ -121,8 +135,19 @@ project("spring-data-jpa") {
   }
 }
 
+project("spring-di") {
+  dependencies {
+    appendSpringBootDependencies(delegate);
+  }
+  task runDI(type: JavaExec) {
+    main = 'com.github.hatimiti.spring.di.Main'
+    classpath = sourceSets.main.runtimeClasspath
+  }
+}
+
 project("spring-security-oauth2") {
   dependencies {
+    appendSpringBootWebDependencies(delegate)
     compile "org.springframework.boot:spring-boot-starter-security"
     compile "org.springframework.security:spring-security-oauth2-client"
     compile "org.springframework.security:spring-security-oauth2-jose"
