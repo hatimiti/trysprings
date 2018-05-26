@@ -1,12 +1,13 @@
 package com.github.hatimiti.spring.cassandra;
 
-import java.io.Serializable;
-import java.util.Date;
-
 import org.springframework.data.cassandra.core.cql.Ordering;
 import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
 import org.springframework.data.cassandra.core.mapping.PrimaryKeyClass;
 import org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn;
+
+import java.io.Serializable;
+import java.util.Date;
+import java.util.Objects;
 
 @PrimaryKeyClass
 public class LoginEventKey implements Serializable {
@@ -21,7 +22,7 @@ public class LoginEventKey implements Serializable {
         return personId;
     }
 
-    public void setPersonId(String personId) {
+    public void setPersonId(final String personId) {
         this.personId = personId;
     }
 
@@ -29,7 +30,7 @@ public class LoginEventKey implements Serializable {
         return eventTime;
     }
 
-    public void setEventTime(Date eventTime) {
+    public void setEventTime(final Date eventTime) {
         this.eventTime = eventTime;
     }
 
@@ -43,24 +44,15 @@ public class LoginEventKey implements Serializable {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
+    public boolean equals(final Object obj) {
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null || getClass() != obj.getClass()) {
             return false;
-        if (getClass() != obj.getClass())
-            return false;
-        LoginEventKey other = (LoginEventKey) obj;
-        if (eventTime == null) {
-            if (other.eventTime != null)
-                return false;
-        } else if (!eventTime.equals(other.eventTime))
-            return false;
-        if (personId == null) {
-            if (other.personId != null)
-                return false;
-        } else if (!personId.equals(other.personId))
-            return false;
-        return true;
+        }
+        final LoginEventKey other = (LoginEventKey) obj;
+        return Objects.equals(eventTime, other.eventTime)
+                && Objects.equals(personId, other.personId);
     }
 }

@@ -1,4 +1,4 @@
-package com.github.hatimiti.spring.dummy;
+package com.github.hatimiti.spring.common.dummy;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

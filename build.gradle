@@ -7,31 +7,35 @@ buildscript {
     jcenter()
   }
   dependencies {
-    classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
   }
 }
 
 group = 'com.github.hatimiti'
 version = '0.0.1-SNAPSHOT'
 
-def void appendSpringBootDependencies(DependencyHandler d) {
-  d.compile 'org.springframework.boot:spring-boot-starter'
-  d.runtime 'org.springframework.boot:spring-boot-devtools'
+def void appendTrySpringsCommonDependencies(DependencyHandler d) {
+  d.compile project(':trysprings-common')
+  d.testCompile project(':trysprings-common')
   d.testCompile 'org.springframework.boot:spring-boot-starter-test'
 }
 def void appendSpringBootWebDependencies(DependencyHandler d) {
   d.compile 'org.springframework.boot:spring-boot-starter-web'
   d.compile 'org.springframework.boot:spring-boot-starter-thymeleaf'
-  d.runtime 'org.springframework.boot:spring-boot-devtools'
-  d.testCompile 'org.springframework.boot:spring-boot-starter-test'
 }
 
 allprojects {
   apply plugin: 'java'
   apply plugin: 'application'
+  apply plugin: 'pmd'
   apply plugin: 'idea'
   apply plugin: 'org.springframework.boot'
   apply plugin: 'io.spring.dependency-management'
+    
+  ext {
+    pmdVersion = '6.3.0'
+    junitVersion = '5.2.0'
+  }
 
   repositories {
     mavenCentral()
@@ -39,12 +43,15 @@ allprojects {
   }
 
   dependencies {
-    compile 'com.h2database:h2'
+    compile 'org.hsqldb:hsqldb'
 
-    testCompile 'org.junit.jupiter:junit-jupiter-api:5.2.0'
-    testRuntime 'org.junit.jupiter:junit-jupiter-engine:5.2.0'
+    testCompile "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
+    testRuntime "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
+
+    pmd "net.sourceforge.pmd:pmd:${pmdVersion}"
+    pmd "net.sourceforge.pmd:pmd-core:${pmdVersion}"
+    pmd "net.sourceforge.pmd:pmd-java:${pmdVersion}"
   }
-
 
   mainClassName = ''
 
@@ -63,6 +70,17 @@ allprojects {
   run {
     classpath += configurations.provided
   }
+
+  pmd { // コーディングチェック
+    ignoreFailures = true
+    sourceSets = [sourceSets.main]
+    reportsDir = file("${project.buildDir}/reports/pmd")
+    /*
+     * https://pmd.github.io/pmd-6.3.0/pmd_rules_java.html
+     * https://github.com/pmd/pmd/
+     */
+    ruleSetFiles = files("${project.rootDir}/pmdRuleSet.xml")
+  }
 }
 
 configure(allprojects) { project ->
@@ -80,6 +98,7 @@ configure(allprojects) { project ->
 
 project("dummy") {
   dependencies {
+    appendTrySpringsCommonDependencies(delegate)
     appendSpringBootWebDependencies(delegate)
   }
   task runDummy(type: JavaExec) {
@@ -90,6 +109,7 @@ project("dummy") {
 
 project("spring-actuator") {
   dependencies {
+    appendTrySpringsCommonDependencies(delegate)
     appendSpringBootWebDependencies(delegate)
     compile 'org.springframework.boot:spring-boot-starter-actuator'
   }
@@ -101,6 +121,7 @@ project("spring-actuator") {
 
 project("spring-aspects") {
   dependencies {
+    appendTrySpringsCommonDependencies(delegate)
     appendSpringBootWebDependencies(delegate)
     compile('org.springframework.boot:spring-boot-starter-aop')
   }
@@ -112,6 +133,7 @@ project("spring-aspects") {
 
 project("spring-cassandra") {
   dependencies {
+    appendTrySpringsCommonDependencies(delegate)
     appendSpringBootWebDependencies(delegate)
     compile 'org.springframework.data:spring-data-cassandra'
     testCompile group: 'org.cassandraunit', name: 'cassandra-unit-spring', version: '3.3.0.2'
@@ -124,7 +146,7 @@ project("spring-cassandra") {
 
 project("spring-data-jpa") {
   dependencies {
-    appendSpringBootDependencies(delegate);
+    appendTrySpringsCommonDependencies(delegate)
     compile 'org.springframework.boot:spring-boot-starter-jdbc'
     compile 'javax.xml.bind:jaxb-api'
     compile 'org.springframework.boot:spring-boot-starter-data-jpa'
@@ -137,7 +159,7 @@ project("spring-data-jpa") {
 
 project("spring-di") {
   dependencies {
-    appendSpringBootDependencies(delegate);
+    appendTrySpringsCommonDependencies(delegate)
   }
   task runDI(type: JavaExec) {
     main = 'com.github.hatimiti.spring.di.Main'
@@ -147,6 +169,7 @@ project("spring-di") {
 
 project("spring-security-oauth2") {
   dependencies {
+    appendTrySpringsCommonDependencies(delegate)
     appendSpringBootWebDependencies(delegate)
     compile "org.springframework.boot:spring-boot-starter-security"
     compile "org.springframework.security:spring-security-oauth2-client"
@@ -156,5 +179,16 @@ project("spring-security-oauth2") {
   task runActuator(type: JavaExec) {
     main = 'com.github.hatimiti.spring.security.Main'
     classpath = sourceSets.main.runtimeClasspath
+  }
+}
+
+project("trysprings-common") {
+  dependencies {
+    compile 'org.springframework.boot:spring-boot-starter'
+    compile 'org.springframework:spring-tx'
+    compile 'org.springframework:spring-jdbc'
+    compile 'javax.transaction:javax.transaction-api'
+    runtime 'org.springframework.boot:spring-boot-devtools'
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
   }
 }

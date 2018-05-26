@@ -14,23 +14,23 @@ import org.springframework.data.cassandra.core.mapping.Table;
  *   with CLUSTERING ORDER BY (event_time DESC)
  * ;
  */
-@Table(value = "login_event")
+@Table("login_event")
 public class LoginEvent {
 
     @PrimaryKey
     private LoginEventKey pk;
 
-    @Column(value = "event_code")
+    @Column("event_code")
     private int eventCode;
 
-    @Column(value = "ip_address")
+    @Column("ip_address")
     private String ipAddress;
 
     public LoginEventKey getPk() {
         return pk;
     }
 
-    public void setPk(LoginEventKey pk) {
+    public void setPk(final LoginEventKey pk) {
         this.pk = pk;
     }
 
@@ -38,7 +38,7 @@ public class LoginEvent {
         return eventCode;
     }
 
-    public void setEventCode(int eventCode) {
+    public void setEventCode(final int eventCode) {
         this.eventCode = eventCode;
     }
 
@@ -46,7 +46,7 @@ public class LoginEvent {
         return ipAddress;
     }
 
-    public void setIpAddress(String ipAddress) {
+    public void setIpAddress(final String ipAddress) {
         this.ipAddress = ipAddress;
     }
 

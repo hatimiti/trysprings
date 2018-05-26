@@ -50,7 +50,7 @@ public abstract class Type<T> implements Serializable {
         }
         try {
             return this.getClass().equals(obj.getClass());
-        } catch (Throwable t) {
+        } catch (Exception e) {
             return false;
         }
     }

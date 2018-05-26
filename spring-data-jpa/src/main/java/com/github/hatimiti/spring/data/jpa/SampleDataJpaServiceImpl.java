@@ -60,7 +60,7 @@ public class SampleDataJpaServiceImpl implements SampleDataJpaService {
         r.reserveItems = new ArrayList<>();
         plans.stream()
                 .forEach(p -> {
-                    ReserveItem i = new ReserveItem();
+                    final ReserveItem i = new ReserveItem();
                     i.plan = p;
                     i.planId = p.planId;
                     i.note = "sample note.";
@@ -77,7 +77,7 @@ public class SampleDataJpaServiceImpl implements SampleDataJpaService {
     }
 
     @Autowired
-    DataSource dataSource;
+    private DataSource dataSource;
 
     @Override
     public Optional<Reserve> findReserveByIdWithJDBC(final Long reserveId) {

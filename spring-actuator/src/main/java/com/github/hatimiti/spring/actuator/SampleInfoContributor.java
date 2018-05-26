@@ -10,7 +10,7 @@ import java.util.Collections;
 public class SampleInfoContributor implements InfoContributor {
 
 	@Override
-	public void contribute(Info.Builder builder) {
+	public void contribute(final Info.Builder builder) {
 		builder.withDetail("example", Collections.singletonMap("someKey", "someValue"));
 	}
 

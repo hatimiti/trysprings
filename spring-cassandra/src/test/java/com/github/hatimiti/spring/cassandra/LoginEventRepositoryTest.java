@@ -1,5 +1,6 @@
 package com.github.hatimiti.spring.cassandra;
 
+import com.github.hatimiti.spring.common.Utils;
 import org.cassandraunit.spring.CassandraDataSet;
 import org.cassandraunit.spring.CassandraUnitDependencyInjectionTestExecutionListener;
 import org.cassandraunit.spring.EmbeddedCassandra;
@@ -41,11 +42,11 @@ public class LoginEventRepositoryTest {
     @Test
     public void testFindByPersonIdAndEventTime() {
         Optional<LoginEvent> event1 = loginEventRepository
-                .findByPersonIdAndEventTime("abc", toDate("20180512185300"));
+                .findByPersonIdAndEventTime("abc", Utils.toDate("20180512185300"));
         assertDoesNotThrow(event1::get);
 
         Optional<LoginEvent> event2 = loginEventRepository
-                .findByPersonIdAndEventTime("xxx", toDate("20180512185300"));
+                .findByPersonIdAndEventTime("xxx", Utils.toDate("20180512185300"));
         assertThrows(NoSuchElementException.class, event2::get);
     }
 
@@ -54,12 +55,4 @@ public class LoginEventRepositoryTest {
     static class TestConfig {
     }
 
-    private static Date toDate(final String yyyyMmDdHhMmSs) {
-        try {
-            final SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-            return sdf.parse(yyyyMmDdHhMmSs);
-        } catch (ParseException e) {
-            return new Date();
-        }
-    }
 }

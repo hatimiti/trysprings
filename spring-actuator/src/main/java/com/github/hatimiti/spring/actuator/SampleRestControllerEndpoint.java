@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class SampleRestControllerEndpoint {
 
 	@GetMapping("/echo/{text}")
-	public ResponseEntity<String> echo(@PathVariable("text") String text) {
+	public ResponseEntity<String> echo(@PathVariable("text") final String text) {
 		return ResponseEntity.ok().header("echo", text).body(text);
 	}
 
