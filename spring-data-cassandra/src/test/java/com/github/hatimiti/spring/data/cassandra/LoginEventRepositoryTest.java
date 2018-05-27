@@ -1,6 +1,9 @@
 package com.github.hatimiti.spring.cassandra;
 
 import com.github.hatimiti.spring.common.Utils;
+import com.github.hatimiti.spring.data.cassandra.CassandraConfig;
+import com.github.hatimiti.spring.data.cassandra.LoginEvent;
+import com.github.hatimiti.spring.data.cassandra.LoginEventRepository;
 import org.cassandraunit.spring.CassandraDataSet;
 import org.cassandraunit.spring.CassandraUnitDependencyInjectionTestExecutionListener;
 import org.cassandraunit.spring.EmbeddedCassandra;
@@ -13,9 +16,6 @@ import org.springframework.data.cassandra.repository.config.EnableCassandraRepos
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 

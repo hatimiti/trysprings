@@ -15,7 +15,6 @@ public class DIServiceImpl implements DIService {
      * <pre>〜 フィールドインジェクション 〜
      * ■ コンストラクタ、Setter を用意する必要が無い
      * ■ コード量は一番少ない
-     * ■ フィールドを final にできる。
      * ■ テスト時にモックオブジェクトに置き換えできない(置き換えづらい)
      * </pre> */
 //    @Autowired
