@@ -131,7 +131,7 @@ project("spring-aspects") {
   }
 }
 
-project("spring-cassandra") {
+project("spring-data-cassandra") {
   dependencies {
     appendTrySpringsCommonDependencies(delegate)
     appendSpringBootWebDependencies(delegate)

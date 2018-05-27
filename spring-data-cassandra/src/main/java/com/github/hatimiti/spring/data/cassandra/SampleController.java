@@ -1,4 +1,4 @@
-package com.github.hatimiti.spring.cassandra;
+package com.github.hatimiti.spring.data.cassandra;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,4 +1,4 @@
-package com.github.hatimiti.spring.cassandra;
+package com.github.hatimiti.spring.data.cassandra;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

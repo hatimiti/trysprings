@@ -1,4 +1,4 @@
-package com.github.hatimiti.spring.cassandra;
+package com.github.hatimiti.spring.data.cassandra;
 
 import org.springframework.data.cassandra.core.cql.Ordering;
 import org.springframework.data.cassandra.core.cql.PrimaryKeyType;

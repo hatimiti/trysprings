@@ -1,4 +1,4 @@
-package com.github.hatimiti.spring.cassandra;
+package com.github.hatimiti.spring.data.cassandra;
 
 import com.github.hatimiti.spring.common.Utils;
 import com.github.hatimiti.spring.data.cassandra.CassandraConfig;
