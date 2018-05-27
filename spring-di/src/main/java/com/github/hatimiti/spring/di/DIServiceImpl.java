@@ -16,16 +16,22 @@ public class DIServiceImpl implements DIService {
      * ■ コンストラクタ、Setter を用意する必要が無い
      * ■ コード量は一番少ない
      * ■ フィールドを final にできる。
-     * ■ テスト時にモックオブジェクトに置き換えづらい
+     * ■ テスト時にモックオブジェクトに置き換えできない(置き換えづらい)
      * </pre> */
 //    @Autowired
     private /*final*/ DIRepository diRepository;
 
     /**
-     * <pre>〜 コンストラクタインジェクション 〜
+     * <pre>〜 コンストラクタインジェクション(推奨) 〜
      * ■ Setter を用意する必要が無い
      * ■ フィールドを final にできる。
      * ■ テスト時にモックオブジェクトに置き換えやすい
+     * ■ SpringFramework を使用しない(インジェクトできない環境での)テストでも引数でモックを渡せる。
+     * ■ 循環依存 A <-> B の場合は利用できない。(逆に循環依存に気づける)
+     * ■ 対象オブジェクトが多くなってきたら記述が煩雑になるんじゃない？
+     *   → そもそもそんなにも依存関係が多くなるような場合はクラス設計を見直したほうが良い可能性がある。
+     * ■ コンストラクタが1つだけの場合は @Autowired が省略可能
+     * (参考) http://pppurple.hatenablog.com/entry/2016/12/29/233141
      * </pre> */
     @Autowired
     public DIServiceImpl(final DIRepository diRepository) {
