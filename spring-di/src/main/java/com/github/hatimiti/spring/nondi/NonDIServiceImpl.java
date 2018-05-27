@@ -5,15 +5,11 @@ import org.springframework.stereotype.Service;
 @Service("nonDIAnnotationService")
 public class NonDIServiceImpl implements NonDIService {
 
-    private NonDIRepository nonDIRepository;
+    private final NonDIRepository nonDIRepository;
 
-    public NonDIServiceImpl(NonDIRepositoryImpl nonDIRepository) {
+    public NonDIServiceImpl(NonDIRepository nonDIRepository) {
         this.nonDIRepository = nonDIRepository;
     }
-
-//    public NonDIServiceImpl(NonDIRepository nonDIRepository) {
-//        this.nonDIRepository = nonDIRepository;
-//    }
 
     @Override
     public String hello() {

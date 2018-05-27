@@ -75,12 +75,6 @@ public class DITest {
         assertNotNull(context.getBean("nonDIJavaConfigService", NonDIService.class));
     }
 
-    @Test
-    public void testAOP() {
-        DIService s1 = context.getBean("diAnnotationService", DIServiceImpl.class);
-        assertEquals("hello DI Service", s1.hello());
-    }
-
     @Import(Main.class)
     @Configuration
     static class TestConfig {

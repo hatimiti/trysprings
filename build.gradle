@@ -160,6 +160,7 @@ project("spring-data-jpa") {
 project("spring-di") {
   dependencies {
     appendTrySpringsCommonDependencies(delegate)
+    compile 'javax.inject:javax.inject:1'
   }
   task runDI(type: JavaExec) {
     main = 'com.github.hatimiti.spring.di.Main'
