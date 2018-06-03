@@ -27,7 +27,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
         listeners = { CassandraUnitDependencyInjectionTestExecutionListener.class })
 @CassandraDataSet(keyspace = "showcase", value = "setup.cql")
 @EmbeddedCassandra(timeout = 60000)
-@EnableCassandraRepositories
 @SpringJUnitConfig
 public class LoginEventRepositoryTest {
 

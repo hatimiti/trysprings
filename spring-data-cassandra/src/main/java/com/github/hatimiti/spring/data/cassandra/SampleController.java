@@ -23,23 +23,23 @@ public class SampleController {
     @GetMapping("/")
     public String hello() {
         final LoginEventKey k = new LoginEventKey();
-        k.setPersonId("sample");
-        k.setEventTime(toDate("20180428162800"));
+        k.personId = "sample";
+        k.eventTime = toDate("20180428162800");
 //        final Optional<LoginEvent> lv1 = loginEventRepository.findById(k);
-        final Optional<LoginEvent> lv2 = loginEventRepository.findByPersonIdAndEventTime(k.getPersonId(), k.getEventTime());
+        final Optional<LoginEvent> lv2 = loginEventRepository.findByPersonIdAndEventTime(k.personId, k.eventTime);
 
-        return "{" + lv2.map(LoginEvent::getIpAddress).orElse("default-value") + "}";
+        return "{" + lv2.map(le -> le.ipAddress).orElse("default-value") + "}";
     }
 
     @GetMapping("/insert")
     public String insert() {
         final LoginEventKey k = new LoginEventKey();
-        k.setPersonId("sample");
-        k.setEventTime(toDate("20180428162800"));
+        k.personId = "sample";
+        k.eventTime = toDate("20180428162800");
         final LoginEvent ev = new LoginEvent();
-        ev.setPk(k);
-        ev.setEventCode(999);
-        ev.setIpAddress("localhost");
+        ev.pk = k;
+        ev.eventCode = 999;
+        ev.ipAddress = "localhost";
         final LoginEvent lv = loginEventRepository.save(ev);
         return lv.toString();
     }

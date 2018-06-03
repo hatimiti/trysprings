@@ -13,26 +13,10 @@ import java.util.Objects;
 public class LoginEventKey implements Serializable {
 
     @PrimaryKeyColumn(name = "person_id", ordinal = 0, type = PrimaryKeyType.PARTITIONED)
-    private String personId;
+    public String personId;
 
     @PrimaryKeyColumn(name = "event_time", ordinal = 1, type = PrimaryKeyType.CLUSTERED, ordering = Ordering.DESCENDING)
-    private Date eventTime;
-
-    public String getPersonId() {
-        return personId;
-    }
-
-    public void setPersonId(final String personId) {
-        this.personId = personId;
-    }
-
-    public Date getEventTime() {
-        return eventTime;
-    }
-
-    public void setEventTime(final Date eventTime) {
-        this.eventTime = eventTime;
-    }
+    public Date eventTime;
 
     @Override
     public int hashCode() {

@@ -18,36 +18,12 @@ import org.springframework.data.cassandra.core.mapping.Table;
 public class LoginEvent {
 
     @PrimaryKey
-    private LoginEventKey pk;
+    public LoginEventKey pk;
 
     @Column("event_code")
-    private int eventCode;
+    public int eventCode;
 
     @Column("ip_address")
-    private String ipAddress;
-
-    public LoginEventKey getPk() {
-        return pk;
-    }
-
-    public void setPk(final LoginEventKey pk) {
-        this.pk = pk;
-    }
-
-    public int getEventCode() {
-        return eventCode;
-    }
-
-    public void setEventCode(final int eventCode) {
-        this.eventCode = eventCode;
-    }
-
-    public String getIpAddress() {
-        return ipAddress;
-    }
-
-    public void setIpAddress(final String ipAddress) {
-        this.ipAddress = ipAddress;
-    }
+    public String ipAddress;
 
 }
