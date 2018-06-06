@@ -11,12 +11,12 @@ buildscript {
   }
 }
 
-group = 'com.github.hatimiti'
-version = '0.0.1-SNAPSHOT'
-
 def void appendTrySpringsCommonDependencies(DependencyHandler d) {
   d.compile project(':trysprings-common')
+  d.compile project(':trysprings-common').sourceSets.main.output
   d.testCompile project(':trysprings-common')
+  d.testCompile project(':trysprings-common').sourceSets.main.output
+
   d.testCompile 'org.springframework.boot:spring-boot-starter-test'
 }
 def void appendSpringBootWebDependencies(DependencyHandler d) {
@@ -31,11 +31,18 @@ allprojects {
   apply plugin: 'idea'
   apply plugin: 'org.springframework.boot'
   apply plugin: 'io.spring.dependency-management'
-    
+
   ext {
     pmdVersion = '6.3.0'
     junitVersion = '5.2.0'
   }
+
+  [compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
+  sourceCompatibility = 1.8
+  targetCompatibility = 1.8
+
+  group = 'com.github.hatimiti'
+  version = '0.0.1-SNAPSHOT'
 
   repositories {
     mavenCentral()
@@ -80,19 +87,6 @@ allprojects {
      * https://github.com/pmd/pmd/
      */
     ruleSetFiles = files("${project.rootDir}/pmdRuleSet.xml")
-  }
-}
-
-configure(allprojects) { project ->
-  compileJava {
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
-    options.encoding = 'UTF-8'
-  }
-  compileTestJava {
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
-    options.encoding = 'UTF-8'
   }
 }
 
