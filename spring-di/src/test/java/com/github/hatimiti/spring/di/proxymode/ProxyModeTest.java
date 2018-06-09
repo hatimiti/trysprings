@@ -44,6 +44,7 @@ public class ProxyModeTest {
          * また、継承するため対象 Bean クラスを final にしたり、メソッドを final にしてはいけない。
          */
         assertTrue(impl1.proxyTargetClassService.getClass().getSimpleName().contains("ProxyTargetClassServiceImpl$$EnhancerBySpringCGLIB"));
+        assertTrue(impl1.proxyTargetClassService instanceof ProxyTargetClassServiceImpl);
         assertEquals(1, impl1.countByProxy());
         assertEquals(1, impl2.countByProxy());
         assertEquals(1, impl1.countByProxy());
