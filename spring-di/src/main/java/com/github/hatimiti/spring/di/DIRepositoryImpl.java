@@ -8,6 +8,7 @@ import java.util.List;
 
 @Repository
 public class DIRepositoryImpl implements DIRepository {
+
     @Override
     public List<User> findAllUsers() {
         return Arrays.asList(

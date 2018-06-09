@@ -7,7 +7,7 @@ public class NonDIServiceImpl implements NonDIService {
 
     private final NonDIRepository nonDIRepository;
 
-    public NonDIServiceImpl(NonDIRepository nonDIRepository) {
+    public NonDIServiceImpl(final NonDIRepository nonDIRepository) {
         this.nonDIRepository = nonDIRepository;
     }
 

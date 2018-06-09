@@ -40,6 +40,7 @@ public class DIConfig {
         /* @Bean メソッドの引数に Spring が自動的にコンテナ内の
          * オブジェクトを渡してくれるため依存度低い */
         return new DIServiceImpl(diRepository);
+
 //        // Setter インジェクションの場合
 //        final DIServiceImpl s = new DIServiceImpl();
 //        s.setDiRepository(diRepository);

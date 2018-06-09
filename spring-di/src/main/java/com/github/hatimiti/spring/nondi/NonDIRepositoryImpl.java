@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Arrays;
 import java.util.List;
 
+@Repository
 public class NonDIRepositoryImpl implements NonDIRepository {
 
     @Override
