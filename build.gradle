@@ -162,6 +162,16 @@ project("spring-di") {
   }
 }
 
+project("spring-lifecycle") {
+  dependencies {
+    appendTrySpringsCommonDependencies(delegate)
+  }
+  task runLifecycle(type: JavaExec) {
+    main = 'com.github.hatimiti.spring.lifecycle.Main'
+    classpath = sourceSets.main.runtimeClasspath
+  }
+}
+
 project("spring-security-oauth2") {
   dependencies {
     appendTrySpringsCommonDependencies(delegate)
