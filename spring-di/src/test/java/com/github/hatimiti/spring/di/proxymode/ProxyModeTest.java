@@ -8,7 +8,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringJUnitConfig
 public class ProxyModeTest {
@@ -43,14 +44,25 @@ public class ProxyModeTest {
          * 但し、利用の都度毎回生成されるため状態は保持できない。
          * また、継承するため対象 Bean クラスを final にしたり、メソッドを final にしてはいけない。
          */
-        assertTrue(impl1.proxyTargetClassService.getClass().getSimpleName().contains("ProxyTargetClassServiceImpl$$EnhancerBySpringCGLIB"));
+        assertTrue(impl1.proxyTargetClassService.getClass().getSimpleName().startsWith("ProxyTargetClassServiceImpl$$EnhancerBySpringCGLIB"));
         assertTrue(impl1.proxyTargetClassService instanceof ProxyTargetClassServiceImpl);
         assertEquals(1, impl1.countByProxy());
         assertEquals(1, impl2.countByProxy());
         assertEquals(1, impl1.countByProxy());
         assertEquals(1, impl2.countByProxy());
-    }
 
+        /**
+         * @Lookup インジェクションでも代替可能
+         */
+        LookupServiceImpl impl3 = (LookupServiceImpl) context.getBean(LookupService.class);
+        LookupServiceImpl impl4 = (LookupServiceImpl) context.getBean(LookupService.class);
+
+        assertTrue(impl3.getClass().getSimpleName().startsWith("LookupServiceImpl$$EnhancerBySpringCGLIB"));
+        assertEquals(1, impl3.countByLookup());
+        assertEquals(1, impl4.countByLookup());
+        assertEquals(1, impl3.countByLookup());
+        assertEquals(1, impl4.countByLookup());
+    }
 
     @Import(Main.class)
     @Configuration
