@@ -6,6 +6,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.stereotype.Component;
 
 /*
@@ -15,11 +16,30 @@ import org.springframework.stereotype.Component;
  * @AfterThrowing(...)
  * @Around(...)
  *
- * Pointcut 参考: http://d.hatena.ne.jp/minokuba/20110302/1299075764
+ * Pointcut 参考:
+ *   http://d.hatena.ne.jp/minokuba/20110302/1299075764
+ *   https://qiita.com/rubytomato@github/items/de1019aeaaab51c8784d
+ *   https://qiita.com/NagaokaKenichi/items/386af61b6866d60964e8
  */
 @Aspect
+@ImportResource("classpath:/aopconfig.xml")
 @Component
 public class SampleAdvice {
+/*
+|-------------|----------|-------|----------|-------|------------|--------|--------|--------|
+|Designators  | Binding  | Class | Abstract | Intf  | Annotation | Method | Args   | BeanID |
+|-------------|----------|-------|----------|-------|------------|--------|--------|--------|
+|execution    | F        | T     | T        | T     |            | T      |        |        |
+|within       | F        | T     |          |       |            |        |        |        |
+|@within      | T        |(T)    |          |       | T          |        |        |        |
+|target       | T        |       | T        | T     |            |        |        |        |
+|@target      | T        |       |(T)       |(T)    | T          |        |        |        |
+|args         | T        |       |          |       |            |        | T      |        |
+|@args        | T        |       |          |       | T          |        |(T)     |        |
+|@annotation  | T        |       |          |       | T          |(T)     |        |        |
+|bean(Spring) | T        |       |          |       |            |        |        | T      |
+|-------------|----------|-------|----------|-------|------------|--------|--------|--------|
+*/
 
     /*
      * ポイントカット事前定義

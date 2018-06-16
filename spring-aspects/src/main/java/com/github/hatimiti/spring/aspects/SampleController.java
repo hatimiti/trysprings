@@ -10,32 +10,20 @@ public class SampleController {
     private SampleService sampleService;
 
     @Autowired
-    public SampleController(SampleService sampleService) {
-        this.sampleService = sampleService;
-    }
+    public SampleController(SampleService sampleService) { this.sampleService = sampleService; }
 
     @GetMapping("/helloA")
-    public String helloA() {
-        return this.sampleService.xxxYyyZzz();
-    }
+    public String helloA() { return this.sampleService.x(); }
 
     @GetMapping("/helloB")
-    public String helloB() {
-        return this.sampleService.yyyZzzXxx();
-    }
+    public String helloB() { return this.sampleService.y(); }
 
     @GetMapping("/helloC")
-    public String helloC() {
-        return this.sampleService.zzzXxxYyy();
-    }
+    public String helloC() { return this.sampleService.z(); }
 
     @GetMapping("/helloD")
-    public String helloD() {
-        return this.sampleService.zzzXxxYyy2();
-    }
+    public String helloD() { return this.sampleService.z2(); }
 
     @GetMapping("/helloE")
-    public String helloE() {
-        return this.sampleService.myAnnotation2();
-    }
+    public String helloE() { return this.sampleService.z3(); }
 }
