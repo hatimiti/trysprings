@@ -172,6 +172,17 @@ project("spring-lifecycle") {
   }
 }
 
+project("spring-profiles") {
+  dependencies {
+    appendTrySpringsCommonDependencies(delegate)
+    compile "org.springframework.boot:spring-boot-starter-validation"
+  }
+  task runProfiles(type: JavaExec) {
+    main = 'com.github.hatimiti.spring.profiles.Main'
+    classpath = sourceSets.main.runtimeClasspath
+  }
+}
+
 project("spring-security-oauth2") {
   dependencies {
     appendTrySpringsCommonDependencies(delegate)
