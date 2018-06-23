@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 /**
- *
+ * 参考: https://www.concretepage.com/spring/spring-bean-life-cycle-tutorial
  */
 @Configuration
 @Import({LyfeCycleConfig.class})
