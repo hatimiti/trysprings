@@ -25,6 +25,17 @@ import org.springframework.stereotype.Component;
 @ImportResource("classpath:/aopconfig.xml")
 @Component
 public class SampleAdvice {
+/* References from https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#spring-core
+ * execution   - for matching method execution join points, this is the primary pointcut designator you will use when working with Spring AOP
+ * within      - limits matching to join points within certain types (simply the execution of a method declared within a matching type when using Spring AOP)
+ * @within     - limits matching to join points within types that have the given annotation (the execution of methods declared in types with the given annotation when using Spring AOP)
+ * this        - limits matching to join points (the execution of methods when using Spring AOP) where the bean reference (Spring AOP proxy) is an instance of the given type
+ * target      - limits matching to join points (the execution of methods when using Spring AOP) where the target object (application object being proxied) is an instance of the given type
+ * @target     - limits matching to join points (the execution of methods when using Spring AOP) where the class of the executing object has an annotation of the given type
+ * args        - limits matching to join points (the execution of methods when using Spring AOP) where the arguments are instances of the given types
+ * @args       - limits matching to join points (the execution of methods when using Spring AOP) where the runtime type of the actual arguments passed have annotations of the given type(s)
+ * @annotation - limits matching to join points where the subject of the join point (method being executed in Spring AOP) has the given annotation
+ */
 /*
 |-------------|----------|-------|----------|-------|------------|--------|--------|--------|
 |Designators  | Binding  | Class | Abstract | Intf  | Annotation | Method | Args   | BeanID |
@@ -44,6 +55,8 @@ public class SampleAdvice {
     /*
      * ポイントカット事前定義
      */
+    @Pointcut("execution(* com.github.hatimiti.spring.aspects.*.*(..))")
+    private void myPackageClasses() { /* DoNothing */ }
 
     @Pointcut("execution(* *..*Service.*(..))")
     private void allServiceMethods() { /* DoNothing */ }
@@ -88,4 +101,32 @@ public class SampleAdvice {
         jp.proceed();
         System.out.println("prints MyAnnotation2 around2");
     }
+
+    // within には抽象クラスやインターフェースではなく、実装クラスを指定する。
+    @Before("within(com.github.hatimiti.spring.aspects.SampleServiceImpl)")
+    public void beforeWithinSampleService(JoinPoint jp) {
+        System.out.println("prints by beforeWithinSampleService()");
+    }
+
+    @Before("@within(myc)")
+    public void beforeAtWithinSampleService(JoinPoint jp, MyClassAnnotation myc) {
+        System.out.println("prints by beforeAtWithinSampleService()");
+    }
+
+    @Before("target(service)")
+    public void beforeTargetSampleService(JoinPoint jp, SampleService service) {
+        System.out.println("prints by beforeTargetSampleService(): " + service);
+    }
+
+    @Before("this(service)")
+    public void beforeThisSampleService(JoinPoint jp, SampleService service) {
+        System.out.println("prints by beforeThisSampleService(): " + service);
+    }
+
+    // @target だけだと依存クラスすべてをチェックするため CGLIB が final クラスエラーとなるため、this でインタフェースのみに制限
+    @Before("@target(myc) && this(com.github.hatimiti.spring.aspects.SampleService)")
+    public void beforeAtTargetSampleService(JoinPoint jp, MyClassAnnotation2 myc) {
+        System.out.println("prints by beforeAtTargetSampleService()");
+    }
+
 }

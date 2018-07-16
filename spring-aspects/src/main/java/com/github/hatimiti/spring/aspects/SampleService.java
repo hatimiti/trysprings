@@ -1,23 +1,16 @@
 package com.github.hatimiti.spring.aspects;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
+@MyClassAnnotation2
+public interface SampleService {
 
-@Service
-public class SampleService {
+    String x();
 
-    public String x() { return "x()"; }
+    String y();
 
-    public String y() { return "y()"; }
+    String z();
 
-    @MyAnnotation
-    public String z() { return "z()"; }
+    String z2();
 
-    @MyAnnotation("sample")
-    public String z2() { return "z2()"; }
-
-    @MyAnnotation2
-    public String z3() { return "z3()"; }
+    String z3();
 
 }
