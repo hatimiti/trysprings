@@ -1,7 +1,5 @@
 package com.github.hatimiti.spring.data.jpa;
 
-import com.github.hatimiti.spring.data.jpa.Main;
-import com.github.hatimiti.spring.data.jpa.SampleDataJpaService;
 import com.github.hatimiti.spring.data.jpa.db.entity.Plan;
 import com.github.hatimiti.spring.data.jpa.db.entity.Reserve;
 import com.github.hatimiti.spring.data.jpa.db.entity.ReserveItem;
