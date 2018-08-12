@@ -1,6 +1,8 @@
-package com.github.hatimiti.spring.profiles;
+package com.github.hatimiti.spring.profiles.impl;
 
 import com.github.hatimiti.spring.common.db.entity.User;
+import com.github.hatimiti.spring.profiles.ProfilesService;
+import com.github.hatimiti.spring.profiles.UserRepository;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 

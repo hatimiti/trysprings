@@ -18,6 +18,7 @@ def void appendTrySpringsCommonDependencies(DependencyHandler d) {
   d.testCompile project(':trysprings-common').sourceSets.main.output
 
   d.testCompile 'org.springframework.boot:spring-boot-starter-test'
+  d.testCompile group: 'com.h2database', name: 'h2', version: '1.4.197'
 }
 def void appendSpringBootWebDependencies(DependencyHandler d) {
   d.compile 'org.springframework.boot:spring-boot-starter-web'
