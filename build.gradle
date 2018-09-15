@@ -184,6 +184,17 @@ project("spring-profiles") {
   }
 }
 
+project("spring-rest") {
+  dependencies {
+    appendTrySpringsCommonDependencies(delegate)
+    appendSpringBootWebDependencies(delegate)
+  }
+  task runActuator(type: JavaExec) {
+    main = 'com.github.hatimiti.spring.rest.Main'
+    classpath = sourceSets.main.runtimeClasspath
+  }
+}
+
 project("spring-security-oauth2") {
   dependencies {
     appendTrySpringsCommonDependencies(delegate)
